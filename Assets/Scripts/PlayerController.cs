@@ -26,6 +26,11 @@ public class PlayerController : MonoBehaviour
     {
         //grab the input from the player for movement
         xinput = Input.GetAxis("Horizontal");
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Camera.main.GetComponent<CameraFollow>().shakeScreen(0.25f, 0.2f);
+        }
     }
 
     // FixedUpdate is called once per physics step
