@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     //the player's horizontal input
     private float xinput = 0f;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -101,6 +102,9 @@ public class PlayerController : MonoBehaviour
 
             //screenshake
             Camera.main.GetComponent<CameraFollow>().shakeScreen(0.25f, 0.2f);
+
+            //subtract from the player's hp
+            FindObjectOfType<GameManager>().ChangeHp(-0.05f);
         }
     }
 
@@ -108,6 +112,10 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //if the trigger the player collided with is in fact an enemy's hurtbox, destory that enemy
-        if (other.gameObject.layer == 7) Destroy(other.gameObject);
+        if (other.gameObject.layer == 7)
+        {
+            Destroy(other.gameObject);
+            FindObjectOfType<GameManager>().DropEnemyNum();
+        }
     }
 }
