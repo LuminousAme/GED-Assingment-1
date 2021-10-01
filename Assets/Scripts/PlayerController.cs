@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     private float gravityGoingDown;
     private bool startJump;
 
+    //enemy collision force
+    [SerializeField] private float enemyCollisionKnockback = 10f;
+
     //rigidbody
     private Rigidbody rb;
     //the player's horizontal input
@@ -52,12 +55,8 @@ public class PlayerController : MonoBehaviour
         //grab the input from the player for movement
         xinput = Input.GetAxis("Horizontal");
 
+        //if the player has pressed the space key this frame and can jump, then jump
         if (Input.GetKeyDown(KeyCode.Space) && checkIsGrounded()) startJump = true;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Camera.main.GetComponent<CameraFollow>().shakeScreen(0.25f, 0.2f);
-        }
     }
 
     // FixedUpdate is called once per physics step
@@ -86,5 +85,29 @@ public class PlayerController : MonoBehaviour
 
         //return if it hit anything
         return (hit.collider != null);
+    }
+
+    //collision with enemy
+    private void OnCollisionEnter(Collision collision)
+    {
+        //only process the collision if it's with an enemy
+        if (collision.gameObject.layer == 7)
+        {
+            //get the contact point
+            ContactPoint contact = collision.contacts[0];
+
+            //knock the player back
+            rb.MovePosition(contact.point + contact.normal.normalized * enemyCollisionKnockback);
+
+            //screenshake
+            Camera.main.GetComponent<CameraFollow>().shakeScreen(0.25f, 0.2f);
+        }
+    }
+
+    //collision with enemy hurtbox
+    private void OnTriggerEnter(Collider other)
+    {
+        //if the trigger the player collided with is in fact an enemy's hurtbox, destory that enemy
+        if (other.gameObject.layer == 7) Destroy(other.gameObject);
     }
 }
