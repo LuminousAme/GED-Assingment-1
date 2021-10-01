@@ -75,17 +75,14 @@ public class PlayerController : MonoBehaviour
         rb.MovePosition(rb.position + moveSpeed * new Vector3(0.0f, 0.0f, xinput) * Time.fixedDeltaTime);
     }
 
-    //check if the player is grounded using a box cast
+    //check if the player is grounded using a raycast
     //based on code from the Code Monkey, Source: https://youtu.be/c3iEl5AwUF8 
     private bool checkIsGrounded()
     {
         //do the boxcast 
         CapsuleCollider collider = GetComponent<CapsuleCollider>();
         RaycastHit hit;
-        //bool detect = Physics.BoxCast(collider.bounds.center, collider.bounds.size, Vector3.down, out hit, Quaternion.identity, transform.localScale.y + 1f, jumpMask);
-        bool detect = Physics.Raycast(rb.position, Vector3.down, out hit, 2.0f * transform.localScale.y, jumpMask);
-
-        Debug.Log(hit);
+        bool detect = Physics.Raycast(rb.position, Vector3.down, out hit, 1.1f * transform.localScale.y, jumpMask);
 
         //return if it hit anything
         return (hit.collider != null);
