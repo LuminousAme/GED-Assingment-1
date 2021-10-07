@@ -24,6 +24,10 @@ public class EnemyController : MonoBehaviour
         //start the direction as being positive (start to end)
         direction = 1f;
 
+        //use the dll to generate some random positions for the enemy to start and end at
+        pathStart = MidtermPluginManager.generateEnemyPosition(new Vector2(0f, 0f), new Vector2(0f, 25f), new Vector2(-5f, 30f), pathStart);
+        pathEnd = MidtermPluginManager.generateEnemyPosition(new Vector2(0f, 0f), new Vector2(0f, 25f), new Vector2(-5f, 30f), pathEnd);
+
         //get the distance between the start and end of the path
         float distance = Mathf.Abs(Vector3.Distance(pathStart, pathEnd));
         //find the total time needed to travel that distance
